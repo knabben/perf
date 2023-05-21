@@ -18,8 +18,12 @@ const (
 	binaryFolder = "/usr/local/bin"
 )
 
+var (
+	logger *log.Logger
+)
+
 func init() {
-	log.SetOutput(os.Stdout)
+	logger = log.New(os.Stdout, "", log.Ldate)
 }
 
 // Install node exporter as systemd service
@@ -58,15 +62,11 @@ func Install() error {
 		return nil
 	}
 
-	log.Println(fmt.Sprintf("%s was found. Skipping rule.", exporterPath))
+	logger.Println(fmt.Sprintf("%s was found. Skipping rule.", exporterPath))
 	return nil
 }
 
-func LocalInstall() {
-
-}
-
 func withCmd(cmd string, args []string) error {
-	log.Printf("Running: %s %s", cmd, args)
+	logger.Printf("%s %s", cmd, args)
 	return sh.Run(cmd, args...)
 }
