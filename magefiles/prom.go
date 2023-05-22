@@ -5,8 +5,9 @@ package main
 import "fmt"
 
 const (
-	tempCR = "/tmp/.prom_cr"
-	tempT  = "/tmp/target.yaml"
+	tempCR      = "/tmp/.prom_cr"
+	tempT       = "/tmp/target.yaml"
+	tempGrafana = "/tmp/.prom_grafana"
 
 	prometheusBundle = "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/bundle.yaml"
 )
@@ -34,12 +35,19 @@ func (Prom) Install(targets string) error {
 		"--from-file=" + tempT,
 	})
 
-	// Create a new CR
+	// Create a new Prometheus CR
 	err = createWriteFile(tempCR, []byte(prometheusCR))
 	if err != nil {
 		return err
 	}
 	runOrFatal("kubectl", []string{"create", "-f", tempCR})
+
+	// Create the Grafana spec
+	err = createWriteFile(tempGrafana, []byte(grafanaSpec))
+	if err != nil {
+		return err
+	}
+	runOrFatal("kubectl", []string{"create", "-f", tempGrafana})
 
 	return nil
 }
@@ -48,7 +56,8 @@ func (Prom) Install(targets string) error {
 func (Prom) Clean() error {
 	runOrFatal("kubectl", []string{"delete", "-f", tempCR})
 	runOrFatal("kubectl", []string{"delete", "-f", prometheusBundle})
+	runOrFatal("kubectl", []string{"delete", "-f", tempGrafana})
 	runOrFatal("kubectl", []string{"delete", "secret", "additional-scrape-configs"})
-	runOrFatal("rm", []string{tempCR, tempT})
+	runOrFatal("rm", []string{tempCR, tempT, tempGrafana})
 	return nil
 }
