@@ -37,7 +37,7 @@ and grafana creates a PV/PVC for persistent storage
 This will install node_exporter on /usr/local/bin
 
 ```
-sudo ./mage downloadExporter
+sudo ./mage node:download
 ```
 
 #### Install the node_exporter systemd service
@@ -45,12 +45,12 @@ sudo ./mage downloadExporter
 Creates a systemd listening on 9100 for all NICs.
 
 ```
-sudo ./mage installExporter
+sudo ./mage node:install
 ```
 
 #### Delete node_exporter systemd service
 
 ```
-sudo ./mage cleanExporter
+sudo ./mage node:clean
 ```
 
