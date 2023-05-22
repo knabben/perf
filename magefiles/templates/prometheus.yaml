@@ -6,11 +6,11 @@ metadata:
 spec:
   resources:
     requests:
-      memory: 200Mi
+      memory: 100Mi
   enableAdminAPI: true
   additionalScrapeConfigs:
     name: additional-scrape-configs
-    key: secret
+    key: target.yaml
 ---
 apiVersion: v1
 kind: Service

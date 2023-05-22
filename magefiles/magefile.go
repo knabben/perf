@@ -19,12 +19,12 @@ const (
 	binaryFolder = "/usr/local/bin/"
 
 	systemdPath = "/etc/systemd/system/"
-
-	prometheusBundle = "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/bundle.yaml"
 )
 
-type Prom mg.Namespace
-type Node mg.Namespace
+type (
+	Prom mg.Namespace
+	Node mg.Namespace
+)
 
 var (
 	logger *log.Logger
@@ -35,6 +35,9 @@ var (
 
 	//go:embed templates/prometheus.yaml
 	prometheusCR string
+
+	//go:embed templates/grafana.yaml
+	grafanaSpec string
 )
 
 func init() {
