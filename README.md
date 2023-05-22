@@ -20,10 +20,16 @@ This will install node_exporter on /usr/local/bin
 sudo ./mage download
 ```
 
-#### Install node_exporter
+#### Install the node_exporter systemd service
 
 Creates a systemd listening on 9100 for all NICs.
 
 ```
 sudo ./mage install
+```
+
+#### Delete node_exporter systemd service
+
+```
+sudo ./mage clean
 ```

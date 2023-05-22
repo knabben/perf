@@ -87,6 +87,14 @@ func Install() error {
 	return nil
 }
 
+// Clean removes the service from systemd
+func Clean() {
+	runOrFatal("systemctl", []string{"disable", "node_exporter"})
+	runOrFatal("systemctl", []string{"stop", "node_exporter"})
+	runOrFatal("rm", []string{nodeExporterSvcPath})
+	runOrFatal("systemctl", []string{"daemon-reload"})
+}
+
 func withCmd(cmd string, args []string) error {
 	logger.Printf("%s %s", cmd, args)
 	return sh.Run(cmd, args...)
