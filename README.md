@@ -15,17 +15,19 @@ mage --compile ./mage
 #### Install Prometheus operator
 
 On a working cluster install the Prometheus Operator, the default CR and Grafana
+The first argument (required) is the list of targets
 
 ```
-./mage installMonitoring
+./mage prom:install 10.0.0.1:9100 
 ```
 
-#### Adding static targets
+Both prometheus (make sure the `/var/local/prometheus` folder exists with the correct permissions) 
+and grafana creates a PV/PVC for persistent storage
 
-To add new targets create a new secret
+#### Cleanup Prometheus installation
 
 ```
-./merge targetMonitoring --targets="xyz:9100,zvh:9100"
+./mage prom:clean
 ```
 
 ### Node Worker
@@ -51,3 +53,4 @@ sudo ./mage installExporter
 ```
 sudo ./mage cleanExporter
 ```
+
