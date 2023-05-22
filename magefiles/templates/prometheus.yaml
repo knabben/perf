@@ -8,6 +8,9 @@ spec:
     requests:
       memory: 100Mi
   enableAdminAPI: true
+  serviceMonitorSelector:
+    matchLabels:
+      main: prometheus
   additionalScrapeConfigs:
     name: additional-scrape-configs
     key: target.yaml
