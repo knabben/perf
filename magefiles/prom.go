@@ -2,7 +2,10 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/magefile/mage/sh"
+)
 
 const (
 	tempCR      = "/tmp/.prom_cr"
@@ -54,10 +57,10 @@ func (Prom) Install(targets string) error {
 
 // Remove Prometheus assets
 func (Prom) Clean() error {
-	runOrFatal("kubectl", []string{"delete", "-f", tempCR})
-	runOrFatal("kubectl", []string{"delete", "-f", prometheusBundle})
-	runOrFatal("kubectl", []string{"delete", "-f", tempGrafana})
-	runOrFatal("kubectl", []string{"delete", "secret", "additional-scrape-configs"})
+	sh.Run("kubectl", "delete", "-f", tempCR)
+	sh.Run("kubectl", "delete", "-f", prometheusBundle)
+	sh.Run("kubectl", "delete", "-f", tempGrafana)
+	sh.Run("kubectl", "delete", "secret", "additional-scrape-configs")
 	runOrFatal("rm", []string{tempCR, tempT, tempGrafana})
 	return nil
 }

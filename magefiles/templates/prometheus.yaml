@@ -1,3 +1,26 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: prompv
+  labels:
+    app.kubernetes.io/name: prometheus
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-storage
+  local:
+      path: /var/opt
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - node
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
@@ -14,6 +37,15 @@ spec:
   additionalScrapeConfigs:
     name: additional-scrape-configs
     key: target.yaml
+  storage:
+    volumeClaimTemplate:
+      spec:
+        selector:
+          matchLabels:
+            app.kubernetes.io/name: prom
+        resources:
+          requests:
+            storage: 2Gi
 ---
 apiVersion: v1
 kind: Service
