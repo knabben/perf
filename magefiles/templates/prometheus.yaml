@@ -12,15 +12,15 @@ spec:
   persistentVolumeReclaimPolicy: Delete
   storageClassName: local-storage
   local:
-      path: /var/opt
+    path: /var/local/prometheus
   nodeAffinity:
     required:
       nodeSelectorTerms:
         - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - node
+          - key: kubernetes.io/os
+            operator: In
+            values:
+              - linux
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
@@ -40,9 +40,7 @@ spec:
   storage:
     volumeClaimTemplate:
       spec:
-        selector:
-          matchLabels:
-            app.kubernetes.io/name: prom
+        storageClassName: local-storage
         resources:
           requests:
             storage: 2Gi
